@@ -1,10 +1,12 @@
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/serviceRoute");
 
 // express app initialization
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // declear port
 const port = 5000;
