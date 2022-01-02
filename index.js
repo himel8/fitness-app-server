@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/serviceRoute");
+const reviewRoute = require("./routes/reviewRoute");
 
 // express app initialization
 const app = express();
@@ -23,6 +24,7 @@ mongoose
 
 // application routes
 app.use("/api/services", userRoute);
+app.use("/api/reviews", reviewRoute);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
