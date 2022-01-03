@@ -5,86 +5,59 @@ const Order = new mongoose.model("Order", OrderSchema);
 
 // get all orders
 router.get("/", async (req, res) => {
-  await Order.find({}, (err, data) => {
-    if (err) {
-      res.status(500).json({
-        error: "there was a server side error",
-      });
-    } else {
-      res.status(200).json({
-        Orders: data,
-      });
-    }
-  });
+  try {
+    const order = await Order.find({});
+    res.status(200).json(order);
+  } catch (err) {
+    res.status(500).json("there was a server side error");
+  }
 });
 
 // get an order by id
 router.get("/:email", async (req, res) => {
-  await Order.find({ email: req.params.email }, (err, data) => {
-    if (err) {
-      res.status(500).json({
-        error: "there was a server side error",
-      });
-    } else {
-      res.status(200).json({
-        Order: data,
-      });
-    }
-  });
+  try {
+    const singelOrder = await Order.find({ email: req.params.email });
+    res.status(200).json(singelOrder);
+  } catch (err) {
+    res.status(500).json("there was a server side error");
+  }
 });
 
 // post an order
 router.post("/", async (req, res) => {
-  const newOrder = new Order(req.body);
-  await newOrder.save((err) => {
-    if (err) {
-      res.status(500).json({
-        error: "there was a server side error",
-      });
-    } else {
-      res.status(200).json({
-        message: "order added successfully",
-      });
-    }
-  });
+  try {
+    const newOrder = await new Order(req.body).save();
+    res.status(200).json(newOrder);
+  } catch (err) {
+    res.status(500).json("there was a server side error");
+  }
 });
 
 // update an order by id
 router.put("/:id", async (req, res) => {
-  await Order.updateOne(
-    { _id: req.params.id },
-    {
-      $set: {
-        action: "paid",
-      },
-    },
-    (err) => {
-      if (err) {
-        res.status(500).json({
-          error: "there was a server side error",
-        });
-      } else {
-        res.status(200).json({
-          message: "order updated successfully",
-        });
+  try {
+    const updateOrder = await Order.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          action: "paid",
+        },
       }
-    }
-  );
+    );
+    res.status(200).json(updateOrder);
+  } catch (err) {
+    res.status(500).json("there was a server side error");
+  }
 });
 
 // Delete an order by id
 router.delete("/:id", async (req, res) => {
-  await Order.deleteOne({ _id: req.params.id }, (err) => {
-    if (err) {
-      res.status(500).json({
-        error: "there was a server side error",
-      });
-    } else {
-      res.status(200).json({
-        message: "order deleted successfully",
-      });
-    }
-  });
+  try {
+    const deleteOrder = await Order.deleteOne({ _id: req.params.id });
+    res.status(200).json(deleteOrder);
+  } catch (err) {
+    res.status(500).json("there was a server side error");
+  }
 });
 
 module.exports = router;
