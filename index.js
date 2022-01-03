@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/serviceRoute");
 const reviewRoute = require("./routes/reviewRoute");
+const orderRoute = require("./routes/orderRoute");
 require("dotenv").config();
 
 // express app initialization
@@ -27,6 +28,7 @@ mongoose
 // application routes
 app.use("/api/services", userRoute);
 app.use("/api/reviews", reviewRoute);
+app.use("/api/orders", orderRoute);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
