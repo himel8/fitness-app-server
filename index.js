@@ -1,9 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const userRoute = require("./routes/serviceRoute");
+const serviceRoute = require("./routes/serviceRoute");
+const userRoute = require("./routes/userRoute");
 const reviewRoute = require("./routes/reviewRoute");
 const orderRoute = require("./routes/orderRoute");
+const paymentRoute = require("./routes/paymentRoute");
 require("dotenv").config();
 
 // express app initialization
@@ -26,9 +28,11 @@ mongoose
   });
 
 // application routes
-app.use("/api/services", userRoute);
+app.use("/api/services", serviceRoute);
+app.use("/api/users", userRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/orders", orderRoute);
+app.use("/api/payment", paymentRoute);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
