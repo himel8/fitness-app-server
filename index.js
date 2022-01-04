@@ -7,10 +7,11 @@ const userRoute = require("./routes/userRoute");
 const reviewRoute = require("./routes/reviewRoute");
 const orderRoute = require("./routes/orderRoute");
 const paymentRoute = require("./routes/paymentRoute");
+const planRoute = require("./routes/planRoute");
 require("dotenv").config();
 
 // firebase JWT
-const serviceAccount = require('./fitness-club-firebase-adminsdk.json')
+const serviceAccount = require("./fitness-club-firebase-adminsdk.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -40,6 +41,7 @@ app.use("/api/users", userRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/payment", paymentRoute);
+app.use("/api/plans", planRoute);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
