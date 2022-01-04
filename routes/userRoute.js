@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
 const UserSchema = require("../schemas/userSchema");
+const { verifyToken } = require("./verifyToken");
 const User = new mongoose.model("User", UserSchema);
 
 /*------------------------
@@ -77,19 +78,28 @@ router.put("/register", async (req, res) => {
 /*------------------------
     upadte an admin role
 --------------------------*/
-router.put("/:email", async (req, res) => {
+router.put("/admin", verifyToken, async (req, res) => {
   try {
-    await User.updateOne(
-      { email: req.params.email },
-      {
-        $set: {
-          isAdmin: "true",
-        },
-      },
-      res.status(200).json({
-        message: "users were updated successfully",
-      })
-    );
+    const requester = req.decodeUser;
+    if (requester) {
+      const requesterAccount = await User.find({ email: requester });
+      console.log(requesterAccount[0].isAdmin);
+      if (requesterAccount[0].isAdmin === true) {
+        const updateUser = await User.updateOne(
+          { email: req.body.email },
+          {
+            $set: {
+              isAdmin: "true",
+            },
+          }
+        );
+        res.status(200).json(updateUser);
+      } else {
+        res.status(401).json({
+          message: "you dont have access to make admin",
+        });
+      }
+    }
   } catch (err) {
     if (err) {
       res.status(500).json({
@@ -102,9 +112,9 @@ router.put("/:email", async (req, res) => {
 /*------------------------
     delete user
 --------------------------*/
-router.delete("/:id", async (req, res) => {
+router.delete("/:email", async (req, res) => {
   try {
-    const deleteUser = await User.deleteOne({ _id: req.params.id });
+    const deleteUser = await User.deleteOne({ email: req.params.email });
     res.status(200).json(deleteUser);
   } catch (err) {
     res.status(500).json({

@@ -1,12 +1,19 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const admin = require("firebase-admin");
 const serviceRoute = require("./routes/serviceRoute");
 const userRoute = require("./routes/userRoute");
 const reviewRoute = require("./routes/reviewRoute");
 const orderRoute = require("./routes/orderRoute");
 const paymentRoute = require("./routes/paymentRoute");
 require("dotenv").config();
+
+// firebase JWT
+const serviceAccount = require('./fitness-club-firebase-adminsdk.json')
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 // express app initialization
 const app = express();
