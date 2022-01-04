@@ -6,13 +6,7 @@ const serviceSchema = mongoose.Schema({
     required: true,
   },
   description: String,
-  imgUrl: String,
-  price: Number,
-  author: String,
-  date: {
-    type: Date,
-    default: Date.now,
-  },
+  img: String,
 });
 
 module.exports = serviceSchema;

@@ -6,15 +6,13 @@ const Service = new mongoose.model("Service", serviceSchema);
 
 // get all services
 router.get("/", async (req, res) => {
-  await Service.find({ author: "fitness" }, (err, data) => {
+  await Service.find({}, (err, data) => {
     if (err) {
       res.status(500).json({
         error: "there was a server side error",
       });
     } else {
-      res.status(200).json({
-        services: data,
-      });
+      res.status(200).json(data);
     }
   });
 });
@@ -27,9 +25,7 @@ router.get("/:id", async (req, res) => {
         error: "there was a server side error",
       });
     } else {
-      res.status(200).json({
-        service: data,
-      });
+      res.status(200).json(data);
     }
   });
 });
